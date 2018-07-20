@@ -25,9 +25,6 @@ func (c *cache)Get(key string) interface{} {
 	return elmt.Value
 }
 
-func (c *cache)updateList(elmt *list.Element)  {
-	c.list.MoveToFront(elmt)
-}
 
 //unsafe basic operation
 func (c *cache)getAndCheckExpire(key string) *list.Element  {
@@ -40,6 +37,7 @@ func (c *cache)getAndCheckExpire(key string) *list.Element  {
 		//remove item
 		delete(c.items, key)
 		c.list.Remove(itm)
+		c.onRemove(key , itm.Value)
 		return nil
 	}
 	return itm

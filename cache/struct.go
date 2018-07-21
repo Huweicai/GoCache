@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-type cache struct {
+type Cache struct {
 	//limit size
 	limit int
 	//items will expire after defaultExpireTime
@@ -14,7 +14,7 @@ type cache struct {
 	items map[string]*list.Element
 	//oldest list
 	list *list.List
-	lock sync.RWMutex
+	lock *sync.RWMutex
 	onRemove func(key string ,val interface{})
 }
 

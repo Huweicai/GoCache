@@ -6,7 +6,7 @@ import (
 )
 
 /*
-	Get object from cache
+	Get object from Cache
 	1 lock
 	2 get
 	3 check is expired
@@ -14,7 +14,7 @@ import (
 	5 return
 	6 unlock
 */
-func (c *cache)Get(key string) interface{} {
+func (c *Cache)Get(key string) interface{} {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 	elmt := c.getAndCheckExpire(key)
@@ -22,18 +22,18 @@ func (c *cache)Get(key string) interface{} {
 		return nil
 	}
 	c.updateList(elmt)
-	return elmt.Value
+	return elmt.Value.(*item).object
 }
 
 
 //unsafe basic operation
-func (c *cache)getAndCheckExpire(key string) *list.Element  {
+func (c *Cache)getAndCheckExpire(key string) *list.Element  {
 	itm , ok := c.items[key]
 	if !ok {
 		return nil
 	}
 	//expired
-	if time.Now().Unix() > itm.Value.(item).ExpireTime {
+	if time.Now().Unix() > itm.Value.(*item).ExpireTime {
 		//remove item
 		delete(c.items, key)
 		c.list.Remove(itm)

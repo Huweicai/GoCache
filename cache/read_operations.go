@@ -26,7 +26,9 @@ func (c *Cache)Get(key string) interface{} {
 }
 
 
-//unsafe basic operation
+/**
+unsafe basic operation
+ */
 func (c *Cache)getAndCheckExpire(key string) *list.Element  {
 	itm , ok := c.items[key]
 	if !ok {
@@ -41,4 +43,16 @@ func (c *Cache)getAndCheckExpire(key string) *list.Element  {
 		return nil
 	}
 	return itm
+}
+
+
+/*
+Get returns default value while get nothing
+ */
+func (c *Cache)DefaultGet(key string , defaultVal interface{}) interface{} {
+	result := c.Get(key)
+	if result == nil {
+		result = defaultVal
+	}
+	return result
 }

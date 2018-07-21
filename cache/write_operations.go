@@ -3,7 +3,7 @@ package cache
 import "time"
 
 /*
-	Set add or update an item to Cache
+	function set add or update an item to Cache
 	1 check expireTime
 	2 check if exists
 	3 update or insert
@@ -11,17 +11,23 @@ import "time"
 	but if expireTime equals zero , it uses default expireTime,
 	and item never expires while it's negative.
 */
-func (c *Cache)Set(key string , val interface{} , expireTime int64)  {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-	if expireTime == 0 {
-		expireTime = c.defaultExpireInterval + time.Now().Unix()
-	} else if expireTime < 0 {
+func (c *Cache)set(key string , val interface{} , expireInterval int64)  {
+	var expireTime int64
+	now := time.Now().Unix()
+	switch  {
+	case expireInterval>0:
+		expireTime = now + expireInterval
+	case expireInterval==0:
+		expireTime = now + c.defaultExpireInterval
+	case expireInterval <0:
 		expireTime = c.maxExpireTime
 	}
 	itm := &item{
 		expireTime, val,
 	}
+	//it's not necessary to lock the whole function
+	c.lock.Lock()
+	defer c.lock.Unlock()
 	if _,ok := c.items[key] ; ok {
 		c.items[key].Value = val
 		c.updateList(c.items[key])
@@ -29,3 +35,21 @@ func (c *Cache)Set(key string , val interface{} , expireTime int64)  {
 		c.items[key] =c.list.PushFront(itm)
 	}
 }
+
+/*
+	Default set
+ */
+func (c *Cache)Set(key string , val interface{})  {
+	c.set(key , val , 0)
+}
+
+/*
+	Set with eXpire interval
+ */
+func (c *Cache)SetX(key string , val interface{} , expireInterval int64 )  {
+	c.set(key , val , expireInterval)
+}
+
+
+
+

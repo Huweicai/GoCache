@@ -8,10 +8,10 @@ import (
 type Cache struct {
 	//limit size
 	limit int
-	//items will expire after defaultExpireTime
+	//items will expire after defaultExpireInterval
 	defaultExpireInterval int64
-	maxExpireTime int64
-	items map[string]*list.Element
+	maxExpireTime         int64
+	items                 map[string]*list.Element
 	//oldest list
 	list *list.List
 	lock *sync.RWMutex

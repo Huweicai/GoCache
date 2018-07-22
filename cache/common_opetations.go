@@ -24,3 +24,12 @@ func NewCache(limit int , defaultExpireInterval int64, onRemove func(key string 
 		onRemove,
 	},nil
 }
+
+/*
+Remove all the items
+ */
+func (c *Cache)Trucate()  {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	c.items = make(map[string]*list.Element)
+}

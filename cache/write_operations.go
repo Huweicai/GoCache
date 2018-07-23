@@ -23,11 +23,14 @@ func (c *Cache)set(key string , val interface{} , expireInterval int64)  {
 		expireTime = c.maxExpireTime
 	}
 	itm := &item{
-		expireTime, val,
+		expireTime,  key,val,
 	}
 	//it's not necessary to lock the whole function
 	c.lock.Lock()
 	defer c.lock.Unlock()
+	if c.size() >= c.limit {
+		c.RemoveOldest()
+	}
 	if _,ok := c.items[key] ; ok {
 		c.items[key].Value = val
 		c.updateList(c.items[key])

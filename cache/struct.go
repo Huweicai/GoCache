@@ -21,5 +21,6 @@ type Cache struct {
 type item struct {
 	//expire time in unix timestamp
 	ExpireTime int64
+	key string
 	object interface{}
 }

@@ -28,8 +28,37 @@ func NewCache(limit int , defaultExpireInterval int64, onRemove func(key string 
 /*
 Remove all the items
  */
-func (c *Cache)Trucate()  {
+func (c *Cache)Truncate()  {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 	c.items = make(map[string]*list.Element)
+}
+
+func (c *Cache)RemoveOldest()(key string , val interface{})  {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	c.removeOldest()
+	return
+}
+
+
+//unsafe inner removeOldest
+func (c *Cache)removeOldest()  {
+	end := c.list.Back()
+	c.list.Remove(end)
+	key := end.Value.(*item).key
+	val := end.Value.(*item).object
+	delete(c.items , key)
+	c.onRemove(key , val)
+}
+
+func (c *Cache)size()(s int) {
+	s = len(c.items)
+	return
+}
+
+func (c *Cache)Size() int {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+
 }

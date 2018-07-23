@@ -2,6 +2,7 @@ package cache
 
 import (
 	"testing"
+	"strconv"
 )
 
 func TestCache_GetestMap(t *testing.T) {
@@ -14,6 +15,9 @@ func TestNewCache(t *testing.T) {
 	})
 	cache.Set("a" , "123" )
 	cache.Set("b" , "234" )
+	for i:=0; i < 1000 ; i++ {
+		cache.Set(strconv.Itoa(i) , strconv.Itoa(i))
+	}
 	x := cache.Get("a")
 	y := cache.Get("a")
 	t.Log(	cache.Get("a"))

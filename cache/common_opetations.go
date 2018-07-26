@@ -60,5 +60,5 @@ func (c *Cache)size()(s int) {
 func (c *Cache)Size() int {
 	c.lock.RLock()
 	defer c.lock.RUnlock()
-
+	return c.size()
 }

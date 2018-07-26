@@ -29,7 +29,7 @@ func (c *Cache)set(key string , val interface{} , expireInterval int64)  {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 	if c.size() >= c.limit {
-		c.RemoveOldest()
+		c.removeOldest()
 	}
 	if _,ok := c.items[key] ; ok {
 		c.items[key].Value = val

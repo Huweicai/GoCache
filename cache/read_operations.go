@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"time"
 	"container/list"
+	"time"
 )
 
 /*
@@ -14,7 +14,7 @@ import (
 	5 return
 	6 unlock
 */
-func (c *Cache)Get(key string) interface{} {
+func (c *Cache) Get(key string) interface{} {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 	elmt := c.getAndCheckExpire(key)
@@ -25,12 +25,11 @@ func (c *Cache)Get(key string) interface{} {
 	return elmt.Value.(*item).object
 }
 
-
 /**
 unsafe basic operation
- */
-func (c *Cache)getAndCheckExpire(key string) *list.Element  {
-	itm , ok := c.items[key]
+*/
+func (c *Cache) getAndCheckExpire(key string) *list.Element {
+	itm, ok := c.items[key]
 	if !ok {
 		return nil
 	}
@@ -39,17 +38,16 @@ func (c *Cache)getAndCheckExpire(key string) *list.Element  {
 		//remove item
 		delete(c.items, key)
 		c.list.Remove(itm)
-		c.onRemove(key , itm.Value)
+		c.onRemove(key, itm.Value)
 		return nil
 	}
 	return itm
 }
 
-
 /*
 Get returns default value while get nothing
- */
-func (c *Cache)DefaultGet(key string , defaultVal interface{}) interface{} {
+*/
+func (c *Cache) DefaultGet(key string, defaultVal interface{}) interface{} {
 	result := c.Get(key)
 	if result == nil {
 		result = defaultVal

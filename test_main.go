@@ -1,26 +1,22 @@
-package cache
+package main
 
 import (
+	"github.com/Huweicai/GoCache/cache"
 	"strconv"
-	"testing"
 	"time"
 )
 
-func TestCache_GetestMap(t *testing.T) {
-
-}
-
-func TestNewCache(t *testing.T) {
+func main() {
 	//init := time.Now().Unix()
-	cache, _ := NewCache(10, 3, func(key string, value interface{}) {
-		print(key)
+	cache, _ := cache.NewCache(10, 3, func(key string, value interface{}) {
+		println(key + "out")
 	})
 	cache.Set("a", "123")
 	cache.Set("b", "234")
 	for i := 0; i < 1000; i++ {
 		cache.Set(strconv.Itoa(i), strconv.Itoa(i))
 	}
-	time.Sleep(400)
+	time.Sleep(time.Duration(4) * time.Second)
 	x := cache.Get("999")
 	x = cache.Get("998")
 	x = cache.Get("997")
@@ -29,7 +25,7 @@ func TestNewCache(t *testing.T) {
 	x = cache.Get("994")
 	x = cache.Get("996")
 	y := cache.Get("a")
-	t.Log(cache.Get("a"))
-	println(x, y)
-
+	if x != nil {
+		println(x, y)
+	}
 }

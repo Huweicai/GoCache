@@ -1,0 +1,6 @@
+//basic configs
+{
+  "httpPort":"6789",
+  "tcpPort":"6788",
+  "":""
+}

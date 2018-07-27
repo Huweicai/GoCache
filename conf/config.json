@@ -1,6 +1,10 @@
-//basic configs
 {
-  "httpPort":"6789",
-  "tcpPort":"6788",
-  "":""
+  "http":{
+    "enable":"true",
+    "port":"6789"
+  },
+  "tcp":{
+    "enable":"true",
+    "port":"6789"
+  }
 }

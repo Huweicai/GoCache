@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-func httpServerInit() {
+func InitHttpServer(port string) {
 	http.HandleFunc("/GET", httpHandler)
-	err := http.ListenAndServe("127.0.0.1:6789", nil)
+	err := http.ListenAndServe("127.0.0.1:" + port, nil)
 	if err != nil {
 		log.Fatal("HTTP server started failed")
 	}
@@ -16,3 +16,5 @@ func httpServerInit() {
 func httpHandler(w http.ResponseWriter, r *http.Request) {
 
 }
+
+

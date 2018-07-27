@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/Huweicai/GoCache/cache"
 	"strconv"
 	"time"
+	"GoCache/cache"
 )
 
-func main() {
+func test() {
 	//init := time.Now().Unix()
 	cache, _ := cache.NewCache(10, 3, func(key string, value interface{}) {
 		println(key + "out")

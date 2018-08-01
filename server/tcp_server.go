@@ -1,7 +1,7 @@
 package server
 
-import "code.byted.org/gopkg/logs"
+import "log"
 
 func InitTcpServer(port string)  {
-	logs.Info("tcp server started at port : %s" , port)
+	log.Printf("TCP server started at port : %s" , port)
 }

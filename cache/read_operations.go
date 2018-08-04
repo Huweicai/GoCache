@@ -48,9 +48,13 @@ func (c *Cache) getAndCheckExpire(key string) *list.Element {
 Get returns default value while get nothing
 */
 func (c *Cache) DefaultGet(key string, defaultVal interface{}) interface{} {
-	result := c.Get(key)
-	if result == nil {
-		result = defaultVal
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	elmt := c.getAndCheckExpire(key)
+	if elmt == nil {
+		return defaultVal
 	}
-	return result
+	c.updateList(elmt)
+	return elmt.Value.(*item).object
 }
+

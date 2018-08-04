@@ -58,3 +58,12 @@ func (c *Cache) DefaultGet(key string, defaultVal interface{}) interface{} {
 	return elmt.Value.(*item).object
 }
 
+/**
+Just a look , won't update list
+ */
+func (c *Cache) Look(key string) interface{}  {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	return c.items[key].Value
+}
+
